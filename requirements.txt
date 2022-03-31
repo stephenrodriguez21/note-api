@@ -1,0 +1,9 @@
+dependency-injector
+fastapi
+uvicorn
+psycopg2-binary
+pyyaml
+sqlalchemy
+pytest
+requests
+pytest-cov
