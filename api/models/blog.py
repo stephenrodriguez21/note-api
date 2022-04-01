@@ -9,9 +9,9 @@ from api.database import Base
 
 class BlogStatus(Enum):
     CREATED = 'created'
-    PENDING_VERIFICATION = 2
-    VERIFIED = 3
-    REJECTED = 4
+    PENDING_VERIFICATION = 'pending_verification'
+    VERIFIED = 'verified'
+    REJECTED = 'rejected'
 
 
 class Category(Base):
@@ -42,3 +42,4 @@ class Blog(Base):
 
     # Relationship
     author = relationship("Author")
+    category = relationship("Category")
