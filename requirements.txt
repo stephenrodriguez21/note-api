@@ -4,6 +4,7 @@ uvicorn
 psycopg2-binary
 pyyaml
 sqlalchemy
+SQLAlchemy-Utils
 pytest
 requests
 pytest-cov
