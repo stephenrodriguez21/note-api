@@ -5,6 +5,8 @@ psycopg2-binary
 pyyaml
 sqlalchemy
 SQLAlchemy-Utils
+PyJWT
 pytest
 requests
 pytest-cov
+Werkzeug==2.0.2
