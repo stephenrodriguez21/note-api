@@ -2,13 +2,13 @@
 
 from dependency_injector import containers, providers
 from api.repositories import AuthorRepository, BlogRepository
-from api.services import AuthorService, BlogService
+from api.services import AuthorService, BlogService, ManageUserService
 from .database import Database
 
 
 class Container(containers.DeclarativeContainer):
 
-    wiring_config = containers.WiringConfiguration(modules=[".endpoints", ".routes.auth_routes"])
+    wiring_config = containers.WiringConfiguration(modules=[".routes.authentication_routes", ".routes.author_routes", ".routes.blog_routes"])
 
     config = providers.Configuration(yaml_files=["config.yml"])
 
@@ -32,4 +32,10 @@ class Container(containers.DeclarativeContainer):
     blog_service = providers.Factory(
         BlogService,
         blog_repository=blog_repository,
+    )
+
+    manageuser_service = providers.Factory(
+        ManageUserService,
+        author_repository=author_repository,
+        blog_repository=blog_repository
     )
