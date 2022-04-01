@@ -9,3 +9,4 @@ class EditBlogRequest(BaseModel):
     content: str
     status: Optional[BlogStatus]
     category_id: int
+    author_id: Optional[int]
