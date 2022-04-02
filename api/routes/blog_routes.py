@@ -13,7 +13,7 @@ blog_route = APIRouter()
 
 
 """Endpoint to get list of all blogs"""
-@blog_route.get("/blogs")
+@blog_route.get("/blogs",)
 @inject
 async def get_blogs(
         blog_service: BlogService = Depends(Provide[Container.blog_service]),

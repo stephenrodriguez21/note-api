@@ -44,7 +44,7 @@ class BlogRepository:
     """Get a list of all blogs joined with related tables(author, category)"""
     async def get_all(self) -> Iterator[Blog]:
         with self.session_factory() as session:
-            return session.query(Blog).options(joinedload('category')).all()
+            return session.query(Blog).options(joinedload('category')).options(joinedload('author')).all()
 
     
     """Get a blog joined with related tables(author, category)"""

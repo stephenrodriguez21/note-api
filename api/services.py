@@ -1,15 +1,16 @@
 """Services module."""
 
-from typing import Iterator
+from typing import Iterator, List
 from urllib.request import Request
 
 from fastapi import HTTPException, Header
+from pydantic import BaseModel
 from api.helpers.authentication_helper import verify_token
 from api.models.author import Author
 from api.models.blog import Blog
 from api.repositories import AuthorRepository, BlogRepository
 from api.views.author.author_views import CreateAuthorRequest
-from api.views.blog.blog_views import EditBlogRequest
+from api.views.blog.blog_views import BlogListViewModel, EditBlogRequest
 from api.views.login.login_view import TokenModel
 from werkzeug.security import generate_password_hash
 import jwt
@@ -59,8 +60,9 @@ class BlogService:
         self._blog_repository: BlogRepository = blog_repository
 
 
-    async def get_blogs(self) -> Iterator[Blog]:
-        return await self._blog_repository.get_all()
+    async def get_blogs(self) -> Iterator[BlogListViewModel]:
+        blogs = await self._blog_repository.get_all()
+        return [BlogListViewModel.from_model(blog) for blog in blogs]
     
 
     async def get_by_id(self, blog_id: int) -> Blog:
