@@ -10,7 +10,7 @@ async def verify_token(x_token: str = Header(...)):
         data = jwt.decode(x_token, "secret_config", algorithms=["HS256"])
         return data  
     except Exception as ex:
-        raise HTTPException(status_code=401, detail=str(ex))
+        raise HTTPException(status_code=403, detail=str(ex))
 
 
 
