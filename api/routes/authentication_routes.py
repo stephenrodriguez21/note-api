@@ -1,4 +1,6 @@
-"""Endpoints module."""
+"""Auth Endpoints module."""
+
+
 from typing import Dict
 from werkzeug.security import check_password_hash
 import jwt
@@ -21,14 +23,14 @@ authentication_route = APIRouter()
 async def authenticate(model: LoginRequest, author_service: AuthorService = Depends(Provide[Container.author_service]),):
     author: Author = await author_service.get_author(model.email)
     if not author:
-        raise HTTPException(status_code=401, detail="Invalid login credentials.")
+        raise HTTPException(status_code=401, detail="Invalid login credentials")
 
     if check_password_hash(author.hashed_password, model.password):
-        # generates the JWT Token
+        # generates the JWT Token with 2 days expiry.
         token: str = jwt.encode({
                         'id': author.id,
                         'name': author.name,
-                        'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes = 840)
+                        'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes = 2880)
                     }, "secret_config", algorithm="HS256")
         
         loggedin_user: Dict = {
@@ -40,4 +42,4 @@ async def authenticate(model: LoginRequest, author_service: AuthorService = Depe
         return {'token' : token, 'loggedin_user': loggedin_user}
 
     
-    raise HTTPException(status_code=401, detail="Invalid login credentials.")
+    raise HTTPException(status_code=401, detail="Invalid login credentials")

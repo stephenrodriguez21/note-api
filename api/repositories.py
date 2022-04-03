@@ -59,4 +59,11 @@ class BlogRepository:
             session.add(blog)
             session.commit()
             session.refresh(blog)
-            return blog             
+            return blog  
+
+
+    """Delete blog"""
+    async def delete_one(self, blog: Blog) -> None:
+        with self.session_factory() as session:
+            session.delete(blog)
+            session.commit()         

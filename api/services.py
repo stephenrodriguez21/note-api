@@ -1,11 +1,10 @@
 """Services module."""
 
-from typing import Iterator, List
+from typing import Iterator
 from urllib.request import Request
 
-from fastapi import HTTPException, Header
-from pydantic import BaseModel
-from api.helpers.authentication_helper import verify_token
+from fastapi import HTTPException
+
 from api.models.author import Author
 from api.models.blog import Blog
 from api.repositories import AuthorRepository, BlogRepository
@@ -86,3 +85,11 @@ class BlogService:
         for key, value in blog_data.items():
             setattr(blog, key, value)
         return await self._blog_repository.create_or_update_one(blog)
+
+    
+    async def delete_one(self, blog_id: int) -> None:
+        blog: Blog = await self._blog_repository.get_one(blog_id)
+        if not blog:
+            raise HTTPException(status_code=404, detail="Item not found")
+
+        await self._blog_repository.delete_one(blog)

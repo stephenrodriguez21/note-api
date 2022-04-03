@@ -1,3 +1,5 @@
+"""Author Endpoints module."""
+
 from fastapi import APIRouter, Depends
 from dependency_injector.wiring import inject, Provide
 from api.containers import Container
