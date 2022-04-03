@@ -1,4 +1,5 @@
 """Endpoints module."""
+from typing import Dict
 from werkzeug.security import check_password_hash
 import jwt
 import datetime
@@ -24,13 +25,19 @@ async def authenticate(model: LoginRequest, author_service: AuthorService = Depe
 
     if check_password_hash(author.hashed_password, model.password):
         # generates the JWT Token
-        token = jwt.encode({
+        token: str = jwt.encode({
                         'id': author.id,
                         'name': author.name,
-                        'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes = 120)
+                        'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes = 840)
                     }, "secret_config", algorithm="HS256")
         
-        return {'token' : token}
+        loggedin_user: Dict = {
+            "id": author.id,
+            "name": author.name,
+            "email": author.email
+        }
+        
+        return {'token' : token, 'loggedin_user': loggedin_user}
 
     
     raise HTTPException(status_code=401, detail="Invalid login credentials.")
