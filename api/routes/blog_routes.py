@@ -1,4 +1,4 @@
-"""Endpoints module."""
+"""Blog Endpoints module."""
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from dependency_injector.wiring import inject, Provide
@@ -30,7 +30,7 @@ async def edit_blog(id: int, request: Request,
         manageuser_service: ManageUserService = Depends(Provide[Container.manageuser_service]),
 ):
     if await manageuser_service.can_modify_blog(id, request) == False:
-        raise HTTPException(status_code=401, detail="permission denied.")
+        raise HTTPException(status_code=401, detail="You are only allowed to edit your blog")
 
     return await blog_service.get_by_id(id)
 
@@ -58,5 +58,19 @@ async def update_blog(id: int, update_model: EditBlogRequest,
         manageuser_service: ManageUserService = Depends(Provide[Container.manageuser_service]),
 ):
     if await manageuser_service.can_modify_blog(id, request) == False:
-        raise HTTPException(status_code=401, detail="permission denied.")
+        raise HTTPException(status_code=401, detail="You are only allowed to modify your blog")
     return await blog_service.update_one(id, update_model)
+
+
+
+"""Endpoint to delete a blog"""
+@blog_route.delete("/blogs/{id}", dependencies=[Depends(verify_token)],)
+@inject
+async def delete_blog(id: int,
+        request: Request,
+        blog_service: BlogService = Depends(Provide[Container.blog_service]),
+        manageuser_service: ManageUserService = Depends(Provide[Container.manageuser_service]),
+):
+    if await manageuser_service.can_modify_blog(id, request) == False:
+        raise HTTPException(status_code=401, detail="You are only allowed to delete your blog")
+    return await blog_service.delete_one(id)
