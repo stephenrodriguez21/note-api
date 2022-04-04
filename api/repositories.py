@@ -1,8 +1,7 @@
 """Repositories module."""
 
-from typing import Callable, Iterator
-from contextlib import AbstractContextManager
-from sqlalchemy.orm import Session, joinedload
+from typing import Any, Iterator
+from sqlalchemy.orm import joinedload, Session
 
 from api.models.author import Author
 from api.models.blog import Blog
@@ -10,7 +9,7 @@ from api.models.blog import Blog
 
 class AuthorRepository:
 
-    def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]) -> None:
+    def __init__(self, session_factory: Session) -> None:
         self.session_factory = session_factory
 
 
@@ -37,7 +36,7 @@ class AuthorRepository:
 
 class BlogRepository:
 
-    def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]) -> None:
+    def __init__(self, session_factory: Session) -> None:
         self.session_factory = session_factory
 
 
