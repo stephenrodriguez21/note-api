@@ -16,6 +16,9 @@ To see the list of available api's you can navigate to `http://localhost:8000/do
 
 ![Screen Shot 2565-04-04 at 04 19 09](https://user-images.githubusercontent.com/91866412/161449092-41207b7f-7980-46d4-9e63-8397857d877a.png)
 
+# Tests
+To run test run this command `pytest tests/test_api.py -s`
+
 
 # Table Schema
 ## Authors
